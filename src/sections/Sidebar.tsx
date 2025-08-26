@@ -19,8 +19,6 @@ interface SidebarProps {
   onLogout: () => void;
 }
 
-
-
 const UserIcon = ({ size = 24, className = "" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -40,8 +38,21 @@ const UserIcon = ({ size = 24, className = "" }) => (
 );
 
 const LogOutIcon = ({ size = 24, className = "" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <polyline points="16 17 21 12 16 7" />
+    <line x1="21" y1="12" x2="9" y2="12" />
   </svg>
 );
 
@@ -62,8 +73,6 @@ const ChevronLeftIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
-
-
 export default function Sidebar({
   isOpen,
   toggleSidebar,
@@ -71,6 +80,7 @@ export default function Sidebar({
   currentUser,
   conversionHistory,
 }: SidebarProps) {
+  // top section
   const TopSection = () => {
     return (
       <div
@@ -90,65 +100,73 @@ export default function Sidebar({
       </div>
     );
   };
-
-  
-
+  // history section
   const HistorySection = () => {
     return (
       <>
         <div className="h-[78%] p-4">
-            <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Conversion History</h3>
-        </div>
-        <div className="space-y-3 max-h-96 overflow-y-auto">
-          {conversionHistory.length === 0 ? (
-            <p
-              className={`text-sm ${
-                isDarkMode ? "text-gray-400" : "text-gray-500"
-              }`}
-            >
-              No conversions yet
-            </p>
-          ) : (
-            conversionHistory.map((item) => (
-              <SidebarItem id={item.id} isDarkMode={isDarkMode} />
-            ))
-          )}
-        </div>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">Conversion History</h3>
+          </div>
+          <div className="space-y-3 max-h-96 overflow-y-auto">
+            {conversionHistory.length === 0 ? (
+              <p
+                className={`text-sm ${
+                  isDarkMode ? "text-gray-400" : "text-gray-500"
+                }`}
+              >
+                No conversions yet
+              </p>
+            ) : (
+              conversionHistory.map((item) => (
+                <SidebarItem
+                  title={item.fileName}
+                  key={item.id}
+                  isDarkMode={isDarkMode}
+                  onClick={() => {
+                    console.log();
+                  }}
+                />
+              ))
+            )}
+          </div>
         </div>
       </>
     );
   };
-
 
   const AccountSection = () => {
     return (
       <>
-      <div className="h-[10%] w-[100%] flex items-center justify-start gap-8 pl-4">
-        <div className="flex items-center justify-between h-[80%] gap-3 ">
-        <div
-          className={`p-2 rounded-full ${
-            isDarkMode ? "bg-blue-600" : "bg-blue-500"
-          }`}
-        >
-          <UserIcon size={20} className="text-white" />
+        <div className="h-[10%] w-[100%] flex items-center justify-start gap-8 pl-4">
+          <div className="flex items-center justify-between h-[80%] gap-3 ">
+            <div
+              className={`p-2 rounded-full ${
+                isDarkMode ? "bg-blue-600" : "bg-blue-500"
+              }`}
+            >
+              <UserIcon size={20} className="text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate">{currentUser}</p>
+              <p
+                className={`text-xs ${
+                  isDarkMode ? "text-gray-400" : "text-gray-500"
+                }`}
+              >
+                User's account
+              </p>
+            </div>
+          </div>
+          <IconButton
+            icon={<LogOutIcon size={30} />}
+            isDarkMode={isDarkMode}
+            onClick={() => {}}
+          />
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium truncate">{currentUser}</p>
-          <p
-            className={`text-xs ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}
-          >
-            User's account
-          </p>
-        </div>
-      </div>
-        <IconButton icon={<LogOutIcon size={30}/>} isDarkMode={isDarkMode} onClick={()=>{}}/>
-
-      </div>
       </>
     );
   };
-
 
   return (
     <>
@@ -156,7 +174,9 @@ export default function Sidebar({
         className={`fixed inset-y-0 left-0 absolute w-80 ${
           isOpen ? "translate-<number>" : "translate-x-[-100%]"
         } transition-all duration-300 overflow-hidden ${
-          isDarkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+          isDarkMode
+            ? "bg-gray-800 border-gray-700"
+            : "bg-white border-gray-200"
         } border-r shadow-lg`}
       >
         <TopSection />
