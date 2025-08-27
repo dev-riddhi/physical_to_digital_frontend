@@ -1,5 +1,5 @@
 import IconButton from "./IconButton";
-import DeleteIcon from "../assets/icons/Icons";
+import {DeleteIcon} from "../assets/icons/Icons";
 
 interface SidebarItemProps {
   title: string;
@@ -24,18 +24,11 @@ export default function SidebarItem({
       <div className="flex items-center gap-2 mb-1">
         <p className="text-sm font-medium truncate">{title}</p>
         <IconButton
-          icon={<DeleteIcon />}
+          icon={<DeleteIcon size={20} />}
           onClick={() => {}}
           isDarkMode={isDarkMode}
         />
       </div>
-      {/* <p
-        className={`text-xs ${
-          isDarkMode ? "text-gray-400" : "text-gray-500"
-        } mb-1`}
-      >
-        {"Date"}
-      </p> */}
     </div>
   );
 }

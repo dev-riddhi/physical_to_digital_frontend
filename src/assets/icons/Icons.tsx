@@ -1,10 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
 interface IconProp {
   size: number;
-  className: string;
+  className ?: string;
 }
 
-const FileTextIcon = ({ size = 24, className = "" }: IconProp) => (
+export const FileTextIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -24,8 +23,7 @@ const FileTextIcon = ({ size = 24, className = "" }: IconProp) => (
     <polyline points="10 9 9 9 8 9" />
   </svg>
 );
-
-const ImageIcon = ({ size = 24, className = "" }: IconProp) => (
+export const ImageIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -43,8 +41,7 @@ const ImageIcon = ({ size = 24, className = "" }: IconProp) => (
     <polyline points="21 15 16 10 5 21" />
   </svg>
 );
-
-const UploadIcon = ({ size = 24, className = "" }: IconProp) => (
+export const UploadIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -62,8 +59,7 @@ const UploadIcon = ({ size = 24, className = "" }: IconProp) => (
     <line x1="12" y1="3" x2="12" y2="15" />
   </svg>
 );
-
-const DownloadIcon = ({ size = 24, className = "" }: IconProp) => (
+export const DownloadIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -81,8 +77,7 @@ const DownloadIcon = ({ size = 24, className = "" }: IconProp) => (
     <line x1="12" y1="15" x2="12" y2="3" />
   </svg>
 );
-
-const MoonIcon = ({ size = 24, className = "" }: IconProp) => (
+export const MoonIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -98,8 +93,7 @@ const MoonIcon = ({ size = 24, className = "" }: IconProp) => (
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
   </svg>
 );
-
-const SunIcon = ({ size = 24, className = "" }: IconProp) => (
+export const SunIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -123,8 +117,7 @@ const SunIcon = ({ size = 24, className = "" }: IconProp) => (
     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
   </svg>
 );
-
-const CheckIcon = ({ size = 24, className = "" }: IconProp) => (
+export const CheckIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -140,8 +133,7 @@ const CheckIcon = ({ size = 24, className = "" }: IconProp) => (
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
-
-const MenuIcon = ({ size = 24, className = "" }: IconProp) => (
+export const MenuIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -159,8 +151,7 @@ const MenuIcon = ({ size = 24, className = "" }: IconProp) => (
     <line x1="3" y1="18" x2="21" y2="18" />
   </svg>
 );
-
-const DeleteIcon = ({ size = 24, className = "" }: IconProp) => (
+export const DeleteIcon = ({ size = 24, className = "" }: IconProp) => (
   <>
     <svg
       width={size}
@@ -189,14 +180,3 @@ const DeleteIcon = ({ size = 24, className = "" }: IconProp) => (
   </>
 );
 
-export default {
-  FileTextIcon,
-  ImageIcon,
-  UploadIcon,
-  DownloadIcon,
-  MenuIcon,
-  CheckIcon,
-  SunIcon,
-  MoonIcon,
-  DeleteIcon,
-};
