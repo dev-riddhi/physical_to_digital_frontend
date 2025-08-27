@@ -1,9 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 interface IconProp {
   size: number;
   className: string;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 const FileTextIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +99,6 @@ const MoonIcon = ({ size = 24, className = "" }: IconProp) => (
   </svg>
 );
 
-// eslint-disable-next-line react-refresh/only-export-components
 const SunIcon = ({ size = 24, className = "" }: IconProp) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
