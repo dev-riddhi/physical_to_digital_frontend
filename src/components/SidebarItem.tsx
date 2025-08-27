@@ -27,6 +27,7 @@ export default function SidebarItem({
           icon={<DeleteIcon size={20} />}
           onClick={() => {}}
           isDarkMode={isDarkMode}
+          
         />
       </div>
     </div>
