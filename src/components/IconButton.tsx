@@ -13,7 +13,7 @@ export default function IconButton({
   const [buttonPressed, setButtonPressed] = useState(false);
   const activeColor = isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200";
   const heandleClick = () => {
-    console.log(activeColor);
+
     setButtonPressed(true);
     setTimeout(() => {
       setButtonPressed(false);

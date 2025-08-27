@@ -1,4 +1,4 @@
-import {MenuIcon,MoonIcon,SunIcon,CheckIcon,UploadIcon,DownloadIcon,} from "../assets/icons/Icons";
+import {MenuIcon,MoonIcon,SunIcon,CheckIcon,UploadIcon,DownloadIcon,} from "../../../assets/icons/Icons";
 interface MainContentProps {
   sidebarOpen: boolean;
   toggleSidebar: () => void;

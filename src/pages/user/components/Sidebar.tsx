@@ -1,5 +1,5 @@
-import IconButton from "../components/IconButton";
-import SidebarItem from "../components/SidebarItem";
+import IconButton from "../../../components/IconButton";
+import SidebarItem from "./SidebarItem";
 
 
 interface ConversionHistoryItem {
@@ -112,7 +112,7 @@ export default function Sidebar({
             </p>
           ) : (
             conversionHistory.map((item) => (
-              <SidebarItem title={item.fileName} isDarkMode={isDarkMode} onClick={()=>{}} />
+              <SidebarItem key={43654674576566} title={item.fileName} isDarkMode={isDarkMode} onClick={()=>{}} />
             ))
           )}
         </div>

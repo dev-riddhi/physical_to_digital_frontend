@@ -1,5 +1,5 @@
-import IconButton from "./IconButton";
-import {DeleteIcon} from "../assets/icons/Icons";
+import IconButton from "../../../components/IconButton";
+import {DeleteIcon} from "../../../assets/icons/Icons";
 
 interface SidebarItemProps {
   title: string;
