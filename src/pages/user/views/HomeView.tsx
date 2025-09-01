@@ -10,8 +10,8 @@ interface ConversionHistoryItem {
   preview: string;
 }
 
-export default function HomeView(){
-      const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+export default function HomeView() {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(
     window.innerWidth < 600 ? false : true
   );
