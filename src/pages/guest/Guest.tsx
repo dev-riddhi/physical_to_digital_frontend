@@ -1,3 +1,9 @@
-export default function Guest() {
-  return <></>;
+import HomeView from "../user/views/HomeView";
+
+export default function LoaderGuest() {
+  return (
+    <>
+      <HomeView />
+    </>
+  );
 }
