@@ -6,7 +6,7 @@ import Admin from "./pages/admin/Admin";
 import Guest from "./pages/guest/Guest";
 
 export default function App() {
-  const apiUrl = import.meta.env.API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const [accessToken, setAccessToken] = useState<string>(
     localStorage.getItem("access_token") ?? ""
@@ -19,7 +19,7 @@ export default function App() {
   };
 
   const handleAccess = () => {
-    fetch(apiUrl + "/api/access", {
+    fetch(apiUrl + "/access", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

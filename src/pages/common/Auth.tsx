@@ -21,10 +21,10 @@ interface Auth {
 export default function Auth({ onGuestRegister, onAuth }: Auth) {
   const [login, setLogin] = useState(true);
 
-  const authUrl: string = import.meta.env.API_URL;
+  const authUrl: string = import.meta.env.VITE_API_URL;
 
   const handleLogin = (data: LoginData) => {
-    fetch(authUrl + "/api/login", {
+    fetch(authUrl + "/login", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -43,7 +43,7 @@ export default function Auth({ onGuestRegister, onAuth }: Auth) {
       });
   };
   const handleSignup = (data: SignupData) => {
-    fetch(authUrl + "/api/signup", {
+    fetch(authUrl + "signup", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
