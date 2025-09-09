@@ -43,7 +43,7 @@ export default function Auth({ onGuestRegister, onAuth }: Auth) {
       });
   };
   const handleSignup = (data: SignupData) => {
-    fetch(authUrl + "signup", {
+    fetch(authUrl + "/signup", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
