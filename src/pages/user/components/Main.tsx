@@ -22,47 +22,43 @@ export default function Main({
   isDarkMode,
   toggleTheme,
 }: MainContentProps) {
-  const HeaderSection = () => {
-    return (
-      <header
-        className={`${
-          isDarkMode
-            ? "bg-gray-800 border-gray-700"
-            : "bg-white border-gray-200"
-        } border-b shadow-sm p-4`}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 h-10">
-            {!sidebarOpen && (
-              <button
-                onClick={toggleSidebar}
-                className={`p-2 rounded-lg ${
-                  isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
-                } transition-colors`}
-                aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
-              >
-                <MenuIcon size={20} />
-              </button>
-            )}
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              NotesConverter
-            </h1>
-          </div>
-          <button
-            onClick={toggleTheme}
-            className={`p-2 rounded-lg ${
-              isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
-            } transition-colors`}
-            aria-label={
-              isDarkMode ? "Switch to light mode" : "Switch to dark mode"
-            }
-          >
-            {isDarkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
-          </button>
+  const HeaderSection = () => (
+    <header
+      className={`${
+        isDarkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+      } border-b shadow-sm p-4`}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4 h-10">
+          {!sidebarOpen && (
+            <button
+              onClick={toggleSidebar}
+              className={`p-2 rounded-lg ${
+                isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
+              } transition-colors`}
+              aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+            >
+              <MenuIcon size={20} />
+            </button>
+          )}
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            NotesConverter
+          </h1>
         </div>
-      </header>
-    );
-  };
+        <button
+          onClick={toggleTheme}
+          className={`p-2 rounded-lg ${
+            isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
+          } transition-colors`}
+          aria-label={
+            isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+          }
+        >
+          {isDarkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+        </button>
+      </div>
+    </header>
+  );
 
   // ==============================================================
 
@@ -75,9 +71,6 @@ export default function Main({
   const MainSection: React.FC = () => {
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
     const [selectedModel, setSelectedModel] = useState("");
-    const [showFilePreview, setShowFilePreview] = useState<UploadedFile | null>(
-      null
-    );
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -107,6 +100,58 @@ export default function Main({
     const updateFileTitle = (id: string, newTitle: string) => {
       setUploadedFiles((prev) =>
         prev.map((f) => (f.id === id ? { ...f, title: newTitle } : f))
+      );
+    };
+
+    type SendIconProps = {
+      size?: number | string;
+      strokeWidth?: number;
+      variant?: "outline" | "solid";
+      className?: string;
+      title?: string;
+    };
+
+    const SendIcon: React.FC<SendIconProps> = ({
+      size = 24,
+      strokeWidth = 2,
+      variant = "outline",
+      className,
+      title = "Send",
+    }) => {
+      if (variant === "solid") {
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width={size}
+            height={size}
+            fill="currentColor"
+            aria-label={title}
+            role="img"
+            className={className}
+          >
+            <path d="M22 2L2 9l9 4 4 9 7-20Zm-7.5 6.5-3.5 4.5-2.5-1 6-3.5Z" />
+          </svg>
+        );
+      }
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width={size}
+          height={size}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-label={title}
+          role="img"
+          className={className}
+        >
+          <path d="M22 2L15 22L11 13L2 9Z" />
+          <path d="M22 2L11 13" />
+        </svg>
       );
     };
 
@@ -150,62 +195,9 @@ export default function Main({
       );
     };
 
-    const UploadIcon = () => (
-      <svg
-        className="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-        />
-      </svg>
-    );
-
-    const SendIcon = () => (
-      <svg
-        className="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <line x1="22" y1="2" x2="11" y2="13" />
-        <polygon points="22,2 15,22 11,13 2,9 22,2" />
-      </svg>
-    );
-
-    const XIcon = () => (
-      <svg
-        className="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-      </svg>
-    );
-
-    const XIconLarge = () => (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-      </svg>
-    );
-
     const openFile = (file: File) => {
       const url = URL.createObjectURL(file);
       window.open(url, "_blank");
-      // Clean up the URL after a delay to free memory
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     };
 
@@ -217,29 +209,44 @@ export default function Main({
     const handleSend = () => {
       console.log("Sending files:", uploadedFiles);
       console.log("Selected model:", selectedModel);
-      // Reset after sending
       setUploadedFiles([]);
       if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
     return (
-      <div className="flex flex-col items-center justify-end p-6 bg-gray-50 w-[100%]  h-[100%]">
+      <div
+        className={`${
+          isDarkMode ? "bg-gray-800" : "bg-white"
+        } flex flex-col items-center justify-end p-6 w-full h-full`}
+      >
         <div
-          className="bg-white shadow-lg p-6 border  border-gray-200  w-[80%]"
+          className={`shadow-lg p-6 w-[80%] border ${
+            isDarkMode
+              ? "bg-gray-900 border-gray-700"
+              : "bg-white border-gray-200"
+          }`}
           style={{ borderRadius: "50px" }}
         >
-          {/* Uploaded Files Display */}
+          {/* Uploaded Files */}
           {uploadedFiles.length > 0 && (
-            <div className="mb-4 space-y-2 max-h-[300px] overflow-y-auto ">
+            <div className="mb-4 space-y-2 max-h-[300px] overflow-y-auto">
               {uploadedFiles.map((uploadedFile) => (
                 <div
                   key={uploadedFile.id}
-                  className="flex items-center gap-3 p-3  bg-gray-50 border"
+                  className={`flex items-center gap-3 p-3 border ${
+                    isDarkMode
+                      ? "bg-gray-800 border-gray-600"
+                      : "bg-gray-50 border-gray-200"
+                  }`}
                   style={{ borderRadius: "30px" }}
                 >
-                  {/* File Preview/Thumbnail */}
+                  {/* Thumbnail */}
                   <div
-                    className="w-12 h-12 bg-gray-100 border flex-shrink-0 overflow-hidden"
+                    className={`w-12 h-12 border flex-shrink-0 overflow-hidden ${
+                      isDarkMode
+                        ? "bg-gray-700 border-gray-600"
+                        : "bg-gray-700 border-gray-700"
+                    }`}
                     style={{ borderRadius: "20px" }}
                   >
                     {uploadedFile.file.type.startsWith("image/") ? (
@@ -260,6 +267,7 @@ export default function Main({
                     )}
                   </div>
 
+                  {/* File Name */}
                   <div className="flex-1">
                     <input
                       type="text"
@@ -267,21 +275,24 @@ export default function Main({
                       onChange={(e) =>
                         updateFileTitle(uploadedFile.id, e.target.value)
                       }
-                      className="w-full text-sm font-medium bg-transparent border-none focus:outline-none focus:bg-white focus:border focus:border-blue-300 px-2 py-1"
-                      placeholder="Enter title..."
+                      className={`w-full text-sm font-medium bg-transparent border-none focus:outline-none px-2 py-1 ${
+                        isDarkMode
+                          ? "text-white focus:bg-gray-700"
+                          : "focus:bg-white"
+                      }`}
                       style={{ borderRadius: "15px" }}
                     />
-                    <p className="text-xs text-gray-500">
+                    <p
+                      className={`text-xs ${
+                        isDarkMode ? "text-gray-700" : "text-gray-700"
+                      }`}
+                    >
                       {uploadedFile.file.name}
                     </p>
                   </div>
-                  <button
-                    onClick={() => setShowFilePreview(uploadedFile)}
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-1 border border-blue-200 hover:bg-blue-50 transition-colors"
-                    style={{ borderRadius: "20px" }}
-                  >
-                    Preview
-                  </button>
+
+                  {/* Buttons */}
+
                   <button
                     onClick={() => openFile(uploadedFile.file)}
                     className="text-green-600 hover:text-green-800 text-sm font-medium px-3 py-1 border border-green-200 hover:bg-green-50 transition-colors"
@@ -291,19 +302,18 @@ export default function Main({
                   </button>
                   <button
                     onClick={() => removeFile(uploadedFile.id)}
-                    className="text-red-500 hover:text-red-700 p-2 border border-red-200 hover:bg-red-50 transition-colors"
+                    className="text-red-600 hover:text-red-800 text-sm font-medium px-3 py-1 border border-red-200 hover:bg-red-50 transition-colors"
                     style={{ borderRadius: "20px" }}
                   >
-                    <XIcon />
+                    Delete
                   </button>
                 </div>
               ))}
             </div>
           )}
 
-          {/* Bottom Section with Add Files, Model Selector and Send */}
+          {/* Upload Section */}
           <div className="flex items-center gap-3">
-            {/* File Upload Section */}
             <input
               ref={fileInputRef}
               type="file"
@@ -315,203 +325,80 @@ export default function Main({
             />
             <label
               htmlFor="file-upload"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100 transition-colors border border-blue-200"
-              style={{ borderRadius: "25px" }}
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border rounded-full ${
+                isDarkMode
+                  ? "bg-gray-700 border-gray-500 text-white"
+                  : "bg-white border-gray-300"
+              }`}
             >
-              <UploadIcon />
-              Add Files
+              Add Files 📁
             </label>
+            <div className="flex-1">
+              <input
+                type="text"
+                value="Give a title"
+                className="text-gray-500 border-none flex items-center gap-2 px-4 py-2 text-sm font-medium border rounded-full "
+                contentEditable={true}
+              />
+            </div>
 
-            <div className="flex-1"></div>
-
-            {/* Custom Model Selector with V-Shape Arms */}
+            {/* Model Selector */}
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors hover:bg-gray-50"
-                style={{ borderRadius: "25px" }}
+                className={`flex items-center gap-2 px-1 py-1 text-sm font-medium border rounded-full ${
+                  isDarkMode
+                    ? "bg-gray-700 border-gray-500 text-white"
+                    : "bg-white border-gray-300"
+                }`}
               >
-                <span>
-                  {selectedModel
-                    ? models.find((m) => m.id === selectedModel)?.name
-                    : "Models"}
-                </span>
-                <svg
-                  className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${
+                {selectedModel
+                  ? models.find((m) => m.id === selectedModel)?.name
+                  : "Models"}
+                <span
+                  className={`transition-transform ${
                     isDropdownOpen ? "rotate-180" : ""
                   }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+                  ▼
+                </span>
               </button>
 
-              {/* Left V-Arm */}
-              <div
-                className={`absolute bottom-full left-1/2 origin-bottom transform -translate-x-1/2 transition-all duration-400 ease-out ${
-                  isDropdownOpen
-                    ? "opacity-100 rotate-[135deg] scale-100"
-                    : "opacity-0 rotate-0 scale-0 pointer-events-none"
-                }`}
-              >
-                {/* Stick Arm */}
-                <div className="w-1 h-16 bg-gray-600 relative rounded-full">
-                  {/* Option Button at the end */}
-                  <div
-                    className={`absolute -top-3 left-1/2 transform -translate-x-1/2 transition-all duration-300 ${
-                      isDropdownOpen
-                        ? "opacity-100 scale-100"
-                        : "opacity-0 scale-0"
-                    }`}
-                    style={{
-                      transitionDelay: isDropdownOpen ? "300ms" : "0ms",
-                    }}
-                  >
-                    <div className="relative">
-                      {/* Oval bubble */}
-                      <div className="px-4 py-2 bg-white border-2 border-gray-300 shadow-lg transform rotate-[135deg] rounded-full">
-                        <button
-                          onClick={() => handleModelSelect(models[0].id)}
-                          className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors whitespace-nowrap"
-                        >
-                          {models[0].name}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+              {isDropdownOpen && (
+                <div
+                  className={`absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 shadow-md rounded-xl p-2 ${
+                    isDarkMode
+                      ? "bg-gray-700 text-white"
+                      : "bg-white text-gray-700"
+                  }`}
+                >
+                  {models.map((model) => (
+                    <button
+                      key={model.id}
+                      onClick={() => handleModelSelect(model.id)}
+                      className="block px-4 py-2 w-full text-left hover:bg-blue-100 rounded-md"
+                    >
+                      {model.name}
+                    </button>
+                  ))}
                 </div>
-              </div>
-
-              {/* Right V-Arm */}
-              <div
-                className={`absolute bottom-full left-1/2 origin-bottom transform -translate-x-1/2 translate-x-0.5 transition-all duration-400 ease-out ${
-                  isDropdownOpen
-                    ? "opacity-100 rotate-45 scale-100"
-                    : "opacity-0 rotate-0 scale-0 pointer-events-none"
-                }`}
-                style={{ transitionDelay: isDropdownOpen ? "150ms" : "0ms" }}
-              >
-                {/* Stick Arm */}
-                <div className="w-1 h-16 bg-gray-600 relative rounded-full">
-                  {/* Option Button at the end */}
-                  <div
-                    className={`absolute -top-3 left-1/2 transform -translate-x-1/2 transition-all duration-300 ${
-                      isDropdownOpen
-                        ? "opacity-100 scale-100"
-                        : "opacity-0 scale-0"
-                    }`}
-                    style={{
-                      transitionDelay: isDropdownOpen ? "450ms" : "0ms",
-                    }}
-                  >
-                    <div className="relative">
-                      {/* Oval bubble */}
-                      <div className="px-4 py-2 bg-white border-2 border-gray-300 shadow-lg transform -rotate-45 rounded-full">
-                        <button
-                          onClick={() => handleModelSelect(models[1].id)}
-                          className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors whitespace-nowrap"
-                        >
-                          {models[1].name}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Send Button */}
             <button
               onClick={handleSend}
               disabled={uploadedFiles.length === 0}
-              className="flex items-center justify-center p-3 bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-              style={{ borderRadius: "25px" }}
+              className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium border rounded-full ${
+                isDarkMode
+                  ? "bg-gray-700 border-gray-500 text-white"
+                  : "bg-white border-gray-300"
+              }`}
             >
-              <SendIcon />
+              <SendIcon size={17} />
             </button>
           </div>
         </div>
-
-        {/* File Preview Popup */}
-        {showFilePreview && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div
-              className="bg-white p-6 max-w-lg w-full"
-              style={{ borderRadius: "30px" }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">File Preview</h3>
-                <button
-                  onClick={() => setShowFilePreview(null)}
-                  className="text-gray-500 hover:text-gray-700 p-2 hover:bg-gray-100 transition-colors"
-                  style={{ borderRadius: "15px" }}
-                >
-                  <XIconLarge />
-                </button>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  {getFileIcon(showFilePreview.file)}
-                  <div>
-                    <p className="font-medium">{showFilePreview.title}</p>
-                    <p className="text-sm text-gray-500">
-                      {showFilePreview.file.name}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-sm text-gray-600">
-                  <p>
-                    <strong>Size:</strong>{" "}
-                    {(showFilePreview.file.size / 1024).toFixed(1)} KB
-                  </p>
-                  <p>
-                    <strong>Type:</strong>{" "}
-                    {showFilePreview.file.type || "Unknown"}
-                  </p>
-                  <p>
-                    <strong>Last Modified:</strong>{" "}
-                    {new Date(
-                      showFilePreview.file.lastModified
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-3 mt-6">
-                <button
-                  onClick={() => openFile(showFilePreview.file)}
-                  className="flex-1 px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition-colors"
-                  style={{ borderRadius: "20px" }}
-                >
-                  Open File
-                </button>
-                <button
-                  onClick={() => setShowFilePreview(null)}
-                  className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                  style={{ borderRadius: "20px" }}
-                >
-                  Close
-                </button>
-                <button
-                  onClick={() => {
-                    removeFile(showFilePreview.id);
-                    setShowFilePreview(null);
-                  }}
-                  className="flex-1 px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors"
-                  style={{ borderRadius: "20px" }}
-                >
-                  Remove File
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     );
   };
@@ -520,15 +407,12 @@ export default function Main({
 
   return (
     <div
-      className={`flex-1 flex flex-col transition-all duration-300
-         `}
+      className="flex-1 flex flex-col transition-all duration-300"
       onClick={
         sidebarOpen && window.innerWidth < 600 ? toggleSidebar : undefined
       }
     >
       <HeaderSection />
-      {/* 
-      <MainSection /> */}
       <MainSection />
     </div>
   );

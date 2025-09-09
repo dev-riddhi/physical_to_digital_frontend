@@ -1,4 +1,4 @@
-import HomeView from "./views/HomeView";
+import HomeView from "./components/HomeView";
 
 export default function User() {
   return <HomeView />;
