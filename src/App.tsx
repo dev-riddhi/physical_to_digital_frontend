@@ -19,7 +19,7 @@ export default function App() {
   };
 
   const handleAccess = () => {
-    fetch(apiUrl + "/access", {
+    fetch(apiUrl + "/api/access", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

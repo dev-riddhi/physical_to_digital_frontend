@@ -24,7 +24,7 @@ export default function Auth({ onGuestRegister, onAuth }: Auth) {
   const authUrl: string = import.meta.env.API_URL;
 
   const handleLogin = (data: LoginData) => {
-    fetch(authUrl + "/login", {
+    fetch(authUrl + "/api/login", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -43,7 +43,7 @@ export default function Auth({ onGuestRegister, onAuth }: Auth) {
       });
   };
   const handleSignup = (data: SignupData) => {
-    fetch(authUrl + "/signup", {
+    fetch(authUrl + "/api/signup", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
