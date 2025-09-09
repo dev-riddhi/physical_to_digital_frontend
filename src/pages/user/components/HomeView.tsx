@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import MainContent from "../components/Main";
+import React, { useState, useEffect } from "react";
+import Sidebar from "./Sidebar";
+import MainContent from "./Main";
 
 interface ConversionHistoryItem {
   id: number;
@@ -11,7 +11,12 @@ interface ConversionHistoryItem {
 }
 
 export default function HomeView() {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  // Initialize theme from localStorage or default to 'light'
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const savedTheme = localStorage.getItem("theme");
+    return savedTheme === "dark";
+  });
+
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(
     window.innerWidth < 600 ? false : true
   );
@@ -23,16 +28,17 @@ export default function HomeView() {
     ConversionHistoryItem[]
   >([]);
 
-  // const fileInputRef = useRef<React.RefObject<HTMLInputElement> | null>(null);
+  // Update theme in localStorage and apply to document
+  useEffect(() => {
+    const theme = isDarkMode ? "dark" : "light";
+    localStorage.setItem("theme", theme);
+    document.documentElement.classList.toggle("dark", isDarkMode);
+  }, [isDarkMode]);
 
   const toggleTheme = (): void => {
-    if (!isDarkMode) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
     setIsDarkMode(!isDarkMode);
   };
+
   const toggleSidebar = (): void => setSidebarOpen(!sidebarOpen);
 
   const handleFileUpload = (
@@ -47,12 +53,6 @@ export default function HomeView() {
       setConvertedText("");
     }
   };
-
-  if (localStorage.getItem("theme") == null) {
-    localStorage.setItem("theme", "light");
-  }
-
-  const theme = localStorage.getItem("theme") == "dark" ? "dark" : "light";
 
   const simulateConversion = (): void => {
     if (!uploadedFile) return;
@@ -140,7 +140,7 @@ export default function HomeView() {
   return (
     <div
       className={`min-h-screen flex ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
       <Sidebar
