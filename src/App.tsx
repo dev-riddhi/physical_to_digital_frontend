@@ -6,6 +6,8 @@ import Admin from "./pages/admin/Admin";
 import Guest from "./pages/guest/Guest";
 
 export default function App() {
+  const apiUrl = import.meta.env.API_URL;
+
   const [accessToken, setAccessToken] = useState<string>(
     localStorage.getItem("access_token") ?? ""
   );
@@ -17,7 +19,7 @@ export default function App() {
   };
 
   const handleAccess = () => {
-    fetch("http://127.0.0.1:8000/api/access", {
+    fetch(apiUrl + "/access", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

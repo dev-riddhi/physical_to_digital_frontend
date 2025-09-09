@@ -21,7 +21,7 @@ interface Auth {
 export default function Auth({ onGuestRegister, onAuth }: Auth) {
   const [login, setLogin] = useState(true);
 
-  const authUrl: string = "http://127.0.0.1:8000/api";
+  const authUrl: string = import.meta.env.API_URL;
 
   const handleLogin = (data: LoginData) => {
     fetch(authUrl + "/login", {
