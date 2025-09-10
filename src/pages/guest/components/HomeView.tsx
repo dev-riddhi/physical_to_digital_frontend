@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar";
+
 import MainContent from "./Main";
 
 interface ConversionHistoryItem {
@@ -11,29 +11,16 @@ interface ConversionHistoryItem {
 }
 
 export default function HomeView() {
-  // ==============================
-  // THEME STATE
-  // ==============================
+  // Initialize theme from localStorage or default to 'light'
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const savedTheme = localStorage.getItem("theme");
     return savedTheme === "dark";
   });
 
-  // ==============================
-  // SIDEBAR STATE
-  // ==============================
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(
     window.innerWidth < 600 ? false : true
   );
-
-  // ==============================
-  // USER STATE
-  // ==============================
-  const [currentUser, setCurrentUser] = useState<string>("");
-
-  // ==============================
-  // FILE + CONVERSION STATE
-  // ==============================
+  const [currentUser, setCurrentUser] = useState<string>("john.doe@email.com");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [convertedText, setConvertedText] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
@@ -41,34 +28,22 @@ export default function HomeView() {
     ConversionHistoryItem[]
   >([]);
 
-  // ==============================
-  // LOGIN FORM STATE
-  // ==============================
-  const [loginEmail, setLoginEmail] = useState<string>("");
-
-  // ==============================
-  // EFFECT: Load Theme + User Email
-  // ==============================
+  // Update theme in localStorage and apply to document
   useEffect(() => {
     const theme = isDarkMode ? "dark" : "light";
     localStorage.setItem("theme", theme);
     document.documentElement.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
-  useEffect(() => {
-    const savedEmail = localStorage.getItem("userEmail");
-    if (savedEmail) {
-      setCurrentUser(savedEmail);
-    }
-  }, []);
+  const toggleTheme = (): void => {
+    setIsDarkMode(!isDarkMode);
+  };
 
-  // ==============================
-  // HANDLERS
-  // ==============================
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const toggleSidebar = (): void => setSidebarOpen(!sidebarOpen);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const file = event.target.files?.[0];
     if (
       file &&
@@ -79,7 +54,7 @@ export default function HomeView() {
     }
   };
 
-  const simulateConversion = () => {
+  const simulateConversion = (): void => {
     if (!uploadedFile) return;
     setIsProcessing(true);
     setTimeout(() => {
@@ -99,7 +74,7 @@ export default function HomeView() {
     }, 2000);
   };
 
-  const downloadText = () => {
+  const downloadText = (): void => {
     const blob = new Blob([convertedText], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -111,7 +86,7 @@ export default function HomeView() {
     URL.revokeObjectURL(url);
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = (): void => {
     const lines = convertedText.split("\n");
     let pdfLines = "";
     lines.forEach((line) => {
@@ -137,74 +112,37 @@ export default function HomeView() {
     URL.revokeObjectURL(url);
   };
 
-  const clearHistory = () => setConversionHistory([]);
-
-  const logout = () => {
-    localStorage.removeItem("userEmail");
+  const clearHistory = (): void => setConversionHistory([]);
+  const logout = (): void => {
     setCurrentUser("");
     setConversionHistory([]);
     setUploadedFile(null);
     setConvertedText("");
   };
 
-  const handleLogin = () => {
-    if (!loginEmail.trim()) return alert("Please enter a valid email!");
-    localStorage.setItem("userEmail", loginEmail);
-    setCurrentUser(loginEmail);
-    setLoginEmail("");
-  };
+  const sidebarHistory: ConversionHistoryItem[] = [
+    {
+      id: 1,
+      fileName: "handwritten_note.jpg",
+      type: "image",
+      date: "2023-10-01",
+      preview: "This is a sample conversion of your handwritten image...",
+    },
+    {
+      id: 2,
+      fileName: "meeting_notes.pdf",
+      type: "image",
+      date: "2023-09-28",
+      preview: "This is a sample conversion of your handwritten PDF...",
+    },
+  ];
 
-  // ==============================
-  // UI
-  // ==============================
-  if (currentUser) {
-    return (
-      <div
-        className={`min-h-screen flex items-center justify-center ${
-          isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
-        }`}
-      >
-        <div className="p-6 rounded-2xl shadow-md bg-white dark:bg-gray-800">
-          <h2 className="text-2xl font-bold mb-4 text-center">
-            Login to Continue
-          </h2>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={loginEmail}
-            onChange={(e) => setLoginEmail(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-lg dark:bg-gray-700 dark:text-white"
-          />
-          <button
-            onClick={handleLogin}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-          >
-            Login
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // ==============================
-  // MAIN VIEW (AFTER LOGIN)
-  // ==============================
   return (
     <div
       className={`min-h-screen flex ${
         isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
-      <Sidebar
-        isOpen={sidebarOpen}
-        isDarkMode={isDarkMode}
-        toggleSidebar={toggleSidebar}
-        currentUser={currentUser}
-        conversionHistory={conversionHistory}
-        onClearHistory={clearHistory}
-        onLogout={logout}
-      />
-
       <MainContent
         sidebarOpen={sidebarOpen}
         toggleSidebar={toggleSidebar}

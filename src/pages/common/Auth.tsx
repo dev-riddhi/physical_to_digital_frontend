@@ -14,17 +14,16 @@ interface SignupData {
 }
 
 interface Auth {
-  onGuestRegister: () => void;
   onAuth: () => void;
 }
 
-export default function Auth({ onGuestRegister, onAuth }: Auth) {
+export default function Auth({ onAuth }: Auth) {
   const [login, setLogin] = useState(true);
 
-  const authUrl: string = import.meta.env.VITE_API_URL;
+  const apiUrl: string = import.meta.env.VITE_API_URL;
 
   const handleLogin = (data: LoginData) => {
-    fetch(authUrl + "/login", {
+    fetch(apiUrl + "/login", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -43,10 +42,28 @@ export default function Auth({ onGuestRegister, onAuth }: Auth) {
       });
   };
   const handleSignup = (data: SignupData) => {
-    fetch(authUrl + "/signup", {
+    fetch(apiUrl + "/signup", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.data) {
+          localStorage.setItem("access_token", json.data.access_token);
+          localStorage.setItem("user_type", json.data.user_type);
+          onAuth();
+        }
+      })
+      .catch(() => {
+        console.error("login error");
+      });
+  };
+
+  const hanleGuestRegister = () => {
+    fetch(apiUrl + "/guest/create", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
       .then((json) => {
@@ -65,7 +82,6 @@ export default function Auth({ onGuestRegister, onAuth }: Auth) {
     <>
       {login ? (
         <LoginView
-          onGuestRegister={onGuestRegister}
           onChange={() => {
             setLogin(!login);
           }}
@@ -73,7 +89,7 @@ export default function Auth({ onGuestRegister, onAuth }: Auth) {
         />
       ) : (
         <SignupView
-          onGuestRegister={onGuestRegister}
+          onGuestRegister={hanleGuestRegister}
           onChange={() => {
             setLogin(!login);
           }}

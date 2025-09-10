@@ -1,4 +1,4 @@
-import HomeView from "../user/components/HomeView";
+import HomeView from "./components/HomeView";
 
 export default function LoaderGuest() {
   return (

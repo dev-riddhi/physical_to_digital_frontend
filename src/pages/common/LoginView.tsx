@@ -8,13 +8,8 @@ interface LoginData {
 interface Login {
   onChange: () => void;
   onSubmit: (data: LoginData) => void;
-  onGuestRegister: () => void;
 }
-export default function LoginView({
-  onChange,
-  onSubmit,
-  onGuestRegister,
-}: Login) {
+export default function LoginView({ onChange, onSubmit }: Login) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -83,12 +78,6 @@ export default function LoginView({
 
               {/* Guest and Sign Up links */}
               <div className="flex justify-between items-center text-sm">
-                <a
-                  onClick={onGuestRegister}
-                  className="font-medium text-blue-400 hover:text-blue-300"
-                >
-                  Continue as Guest
-                </a>
                 <a
                   onClick={onChange}
                   className="font-medium text-blue-400 hover:text-blue-300"
