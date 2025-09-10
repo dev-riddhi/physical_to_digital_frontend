@@ -37,7 +37,7 @@ export default function App() {
   };
 
   if (accessToken == undefined || accessToken == "") {
-    return <Auth onGuestRegister={() => {}} onAuth={handleAuth} />;
+    return <Auth onAuth={handleAuth} />;
   }
 
   handleAccess();
