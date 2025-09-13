@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Main from "./components/Main";
-import PdfViewe from "../common/PdfView";
+import PdfViewe, { MyDocument } from "../common/PdfView";
+import { pdf } from "@react-pdf/renderer";
 
 interface UploadedFile {
   file: File;
@@ -13,27 +14,78 @@ type models = "tesseract" | "paddle";
 const apiUrl: string = import.meta.env.VITE_API_URL;
 
 export default function Guest() {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const savedTheme = localStorage.getItem("theme");
-    return savedTheme === "dark";
-  });
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(
+    localStorage.getItem("theme") == "dark" ? true : false
+  );
 
   const [showDownloadView, setShowDownloadView] = useState<boolean>(false);
 
+  const [pdfFileTitle, setPdfFileTitle] = useState<string>("");
+
   const [pdfContents, setPdfContents] = useState<string[]>();
 
-  useEffect(() => {
-    const theme = isDarkMode ? "dark" : "light";
-    localStorage.setItem("theme", theme);
-    document.documentElement.classList.toggle("dark", isDarkMode);
-  }, [isDarkMode]);
+  const [limit, setLimit] = useState<number>(0);
+
+  const hanleGuestRegister = () => {
+    fetch(apiUrl + "/guest/create", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.data) {
+          localStorage.setItem("access_token", json.data.access_token);
+          localStorage.setItem("user_type", json.data.user_type);
+        }
+      })
+      .catch(() => {
+        console.error("login error");
+      });
+  };
+
+  if (
+    localStorage.getItem("theme") == undefined ||
+    localStorage.getItem("theme") == ""
+  )
+    localStorage.setItem("theme", "light");
+
+  if (
+    localStorage.getItem("access_token") == undefined ||
+    localStorage.getItem("access_token") == ""
+  ) {
+    hanleGuestRegister();
+  }
 
   const handleTheme = (): void => {
     setIsDarkMode(!isDarkMode);
+    localStorage.setItem("theme", isDarkMode ? "light" : "dark");
   };
 
   const handleDownload = () => {
-    setShowDownloadView(!showDownloadView);
+    const width = window.innerWidth;
+    if (width <= 640) {
+      if (pdfFileTitle == "") setPdfFileTitle("note.pdf");
+
+      pdf(<MyDocument pdfContents={pdfContents ?? []} />)
+        .toBlob()
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `${pdfFileTitle}.pdf`;
+          link.click();
+        });
+    } else {
+      showPreview();
+    }
+  };
+
+  const showPreview = () => {
+    setShowDownloadView(true);
+  };
+
+  const closePreview = () => {
+    setShowDownloadView(false);
   };
 
   const handleConvertRequest = (
@@ -44,6 +96,8 @@ export default function Guest() {
     onError: (error: string) => void
   ) => {
     const formData = new FormData();
+
+    setPdfFileTitle(title ?? "");
 
     files.forEach((file) => {
       formData.append("files", file.file);
@@ -65,11 +119,17 @@ export default function Guest() {
           setPdfContents(json.data.text);
           onComplete(json);
         }
+
+        if (json.data.limit == 0) {
+          setLimit(json.data.limit);
+        }
       })
       .catch(() => {
         onError("Unable to upload");
       });
   };
+
+  console.log("guest");
 
   return (
     <div
@@ -79,6 +139,7 @@ export default function Guest() {
     >
       {!showDownloadView ? (
         <Main
+          limit={limit}
           isDarkMode={isDarkMode}
           handleTheme={handleTheme}
           handleConvertRequest={handleConvertRequest}
@@ -86,7 +147,8 @@ export default function Guest() {
         />
       ) : (
         <PdfViewe
-          handleDownload={handleDownload}
+          pdfFileName={pdfFileTitle}
+          closePreview={closePreview}
           pdfContents={pdfContents ?? []}
         />
       )}

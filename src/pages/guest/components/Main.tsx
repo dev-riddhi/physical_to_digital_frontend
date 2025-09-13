@@ -12,11 +12,13 @@ interface MainContentProps {
   handleDownload: () => void;
   handleTheme: () => void;
   isDarkMode: boolean;
+  limit: number;
 }
 
 interface HeaderSectionProps {
   isDarkMode: boolean;
   handleTheme: () => void;
+  limit: number;
 }
 
 interface MainSectionProp {
@@ -136,7 +138,7 @@ const DownloadIcon = ({ size = 24 }) => (
   </svg>
 );
 
-function HeaderSection({ isDarkMode, handleTheme }: HeaderSectionProps) {
+function HeaderSection({ isDarkMode, handleTheme, limit }: HeaderSectionProps) {
   return (
     <header
       className={`border-none ${
@@ -144,22 +146,26 @@ function HeaderSection({ isDarkMode, handleTheme }: HeaderSectionProps) {
       } pl-4 pr-4 sm:h-[5%] border-none  lg:h-[12%] w-[100%] flex items-center justify-between`}
     >
       <div className="flex items-center justify-between border-none w-[100%]">
-        <div className="flex items-center gap-4 h-10">
+        <div className="flex items-center justify-between">
           <h1 className="lg:text-2xl border-none sm:text-10 font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             NotesConverter
           </h1>
         </div>
-        <button
-          onClick={handleTheme}
-          className={`p-2 rounded-lg ${
-            isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
-          } transition-colors`}
-          aria-label={
-            isDarkMode ? "Switch to light mode" : "Switch to dark mode"
-          }
-        >
-          {isDarkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
-        </button>
+
+        <div className="flex w-[10%] gap-5">
+          <div className="flex items-center justify-between">🪙 {limit}</div>
+          <button
+            onClick={handleTheme}
+            className={`p-2 rounded-lg ${
+              isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"
+            } transition-colors`}
+            aria-label={
+              isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+            }
+          >
+            {isDarkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+          </button>
+        </div>
       </div>
     </header>
   );
@@ -497,6 +503,7 @@ function MainSection({
 
 export default function Main({
   isDarkMode,
+  limit,
   handleTheme,
   handleConvertRequest,
   handleDownload,
@@ -511,7 +518,11 @@ export default function Main({
         isDarkMode ? "bg-gray-800" : "bg-white"
       }  transition-all duration-300`}
     >
-      <HeaderSection isDarkMode={isDarkMode} handleTheme={handleTheme} />
+      <HeaderSection
+        limit={limit}
+        isDarkMode={isDarkMode}
+        handleTheme={handleTheme}
+      />
       <MainSection
         handleDownload={handleDownload}
         isDarkMode={isDarkMode}
