@@ -138,22 +138,22 @@ const DownloadIcon = ({ size = 24 }) => (
   </svg>
 );
 
-function HeaderSection({ isDarkMode, handleTheme, limit }: HeaderSectionProps) {
+function HeaderSection({ isDarkMode, handleTheme }: HeaderSectionProps) {
   return (
     <header
       className={`border-none ${
         isDarkMode ? "bg-gray-800" : "bg-white"
-      } pl-4 pr-4 sm:h-[5%] border-none  lg:h-[12%] w-[100%] flex items-center justify-between`}
+      } pl-4 pr-4 border-none  lg:h-[12%] w-[100%] flex items-center justify-between`}
     >
       <div className="flex items-center justify-between border-none w-[100%]">
         <div className="flex items-center justify-between">
-          <h1 className="lg:text-2xl border-none sm:text-10 font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="lg:text-2xl border-none font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             NotesConverter
           </h1>
         </div>
 
-        <div className="flex w-[10%] gap-5">
-          <div className="flex items-center justify-between">🪙 {limit}</div>
+        <div className="flex ">
+          {/* <div className="flex items-center justify-between">🪙 {limit}</div> */}
           <button
             onClick={handleTheme}
             className={`p-2 rounded-lg ${
